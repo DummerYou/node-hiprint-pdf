@@ -56,9 +56,9 @@ export default async function (fastify, opts) {
           console.log("createImage error", error);
         }
       }
-      if(data.templateInfo && data.templateInfo.length > 0 && typeof data.templateInfo === 'string'){
+      if(data.template && data.template.length > 0 && typeof data.template === 'string'){
         try {
-          data.templateInfo = JSON.parse(data.templateInfo);
+          data.template = JSON.parse(data.template);
         } catch (error) {
           console.log("createImage error", error);
         }
@@ -121,9 +121,9 @@ export default async function (fastify, opts) {
           console.log("createImage error", error);
         }
       }
-      if(data.templateInfo && data.templateInfo.length > 0 && typeof data.templateInfo === 'string'){
+      if(data.template && data.template.length > 0 && typeof data.template === 'string'){
         try {
-          data.templateInfo = JSON.parse(data.templateInfo);
+          data.template = JSON.parse(data.template);
         } catch (error) {
           console.log("createImage error", error);
         }
@@ -181,9 +181,9 @@ export default async function (fastify, opts) {
           console.log("createImage error", error);
         }
       }
-      if(data.templateInfo && data.templateInfo.length > 0 && typeof data.templateInfo === 'string'){
+      if(data.template && data.template.length > 0 && typeof data.template === 'string'){
         try {
-          data.templateInfo = JSON.parse(data.templateInfo);
+          data.template = JSON.parse(data.template);
         } catch (error) {
           console.log("createImage error", error);
         }
