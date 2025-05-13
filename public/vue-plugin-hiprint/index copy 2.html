@@ -1,0 +1,236 @@
+﻿<!-- index.html -->
+
+<head>
+  <!-- 打印样式是必须的，你可以调整成自由链接， 注意 media="print"  名称 print-lock.css -->
+  <link rel="stylesheet" type="text/css" media="print"
+    href="https://unpkg.com/vue-plugin-hiprint@latest/dist/print-lock.css" />
+  <!-- 下列使用的都是 unpkg提供的 稳定性未知, 建议下载自行处理  -->
+  <!-- jquery 必须 -->
+  <script src="https://unpkg.com/jquery@3.6.1/dist/jquery.js"></script>
+  <!-- 条形码 -->
+  <script src="https://unpkg.com/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  <!-- 二维码、条形码 bwip-js -->
+  <script src="https://unpkg.com/bwip-js@4.5.1/dist/bwip-js.js"></script>
+  <!-- 数字转大写 -->
+  <script src="https://unpkg.com/nzh@1.0.14/dist/nzh.min.js"></script>
+  <!-- 颜色选择器 -->
+  <script src="https://unpkg.com/@claviska/jquery-minicolors@2.3.6/jquery.minicolors.min.js"></script>
+  <!-- 直接打印(print2)需要 -->
+  <script src="https://unpkg.com/socket.io-client@4.5.1/dist/socket.io.min.js"></script>
+  <!-- toPdf需要 -->
+  <script src="https://unpkg.com/canvg@3.0.10/lib/umd.js"></script>
+  <script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/html2canvas@1.4.1/dist/html2canvas.js"></script>
+  <!-- vue-plugin-hiprint 😃 -->
+  <script src="./vue-plugin-hiprint.js"></script>
+</head>
+
+<body>
+  <div id="hiprintTemplate" class="hiprintTemplate"></div>
+  <!-- 注意 defer -->
+  <script defer>
+    let data2 = {
+      template: {
+        "panels": [{
+          "index": 0,
+          "name": 1,
+          "height": 80,
+          "width": 60,
+          "paperHeader": 0,
+          "paperFooter": 226.7716535433071,
+          "printElements": [{
+            "options": {
+              "left": 5,
+              "top": 97.5,
+              "height": 32,
+              "width": 160,
+              "title": "库位编码",
+              "barcodeType": "CODE128",
+              "testData": "A101-01-01-01",
+              "fontSize": 12,
+              "lineHeight": 18,
+              "textAlign": "center",
+              "hideTitle": true,
+              "componentType": "barCode",
+              "field": "slCode",
+              "moduleId": "slCodeBarcode",
+              "moduleName": "库位编码条码",
+              "qid": "slCode_1"
+            },
+            "printElementType": {
+              "title": "库位编码",
+              "type": "barcode"
+            }
+          }],
+          "paperNumberLeft": 111,
+          "paperNumberTop": 119,
+          "paperNumberDisabled": true,
+          "paperNumberContinue": true,
+          "paperNumberFormat": "${paperNo}-${paperCount}",
+          "watermarkOptions": {},
+          "panelLayoutOptions": {}
+        }]
+      },
+      printData: [
+        [{
+          "createTime": "2025-04-29 13:56:38",
+          "createUser": "jyz3",
+          "printDate": "2025-05-13 16:13:49",
+          "slCode": 1234567,
+          "slId": 16298,
+          "slStatusName": "正常",
+          "slTypeName": "货架",
+          "tableUser": "jyz3",
+          "updateTime": "2025-04-30 14:19:24",
+          "updateUser": "jyz3",
+          "useTypeName": "拣货库位",
+          "wzCode": "BB",
+          "wzId": 324,
+          "wzName": "BB区"
+        }]
+      ],
+
+      noFile: true
+    }
+
+    let data = {
+      template: {
+        "panels": [{
+          "index": 0,
+          "name": 1,
+          "height": 80,
+          "width": 60,
+          "paperHeader": 0,
+          "paperFooter": 226.7716535433071,
+          "printElements": [{
+            "options": {
+              "left": 29.5,
+              "top": 22.25,
+              "height": 52.5,
+              "width": 120,
+              "testData": "A101-01-01-01",
+              "fontSize": 12,
+              "lineHeight": 18,
+              "textType": "barcode",
+              "textAlign": "center",
+              "componentType": "barCode",
+              "field": "slCode",
+              "moduleId": "slCodeBarcode",
+              "moduleName": "库位编码条码",
+              "title": "库位编码"
+            },
+            "printElementType": {
+              "title": "库位编码",
+              "type": "text"
+            }
+          }, {
+            "options": {
+              "left": 10.75,
+              "top": 181.25,
+              "height": 16,
+              "width": 150,
+              "testData": "XXXXXXXXXXX",
+              "fontSize": 10,
+              "textAlign": "left",
+              "textContentVerticalAlign": "middle",
+              "componentType": "text",
+              "field": "bearWeight",
+              "title": "承重(kg)"
+            },
+            "printElementType": {
+              "title": "承重(kg)",
+              "type": "text"
+            }
+          }, {
+            "options": {
+              "left": 5,
+              "top": 97.5,
+              "height": 32,
+              "width": 160,
+              "title": "库位编码",
+              "barcodeType": "code128",
+              "testData": "A101-01-01-01",
+              "fontSize": 12,
+              "lineHeight": 18,
+              "textAlign": "center",
+              "hideTitle": true,
+              "componentType": "barCode",
+              "field": "slCode",
+              "moduleId": "slCodeBarcode",
+              "moduleName": "库位编码条码",
+              "qid": "slCode_1"
+            },
+            "printElementType": {
+              "title": "库位编码",
+              "type": "barcode"
+            }
+          },{
+                            "options": {
+                                "left": 12,
+                                "top": 30,
+                                "height": 32,
+                                "width": 120,
+                                "testData": "A101",
+                                "fontSize": 12,
+                                "lineHeight": 18,
+                                "textType": "barcode",
+                                "textAlign": "center",
+                                "componentType": "barCode",
+                                "field": "wzCode",
+                                "moduleId": "wzCodeBarcode",
+                                "moduleName": "库区编号条码",
+                                "title": "库区编号",
+                                "right": 128.25,
+                                "bottom": 66.9921875,
+                                "vCenter": 68.25,
+                                "hCenter": 50.9921875
+                            },
+                            "printElementType": {
+                                "title": "库区编号",
+                                "type": "text"
+                            }
+                        }],
+          "paperNumberLeft": 111,
+          "paperNumberTop": 119,
+          "paperNumberDisabled": true,
+          "paperNumberContinue": true,
+          "paperNumberFormat": "${paperNo}-${paperCount}",
+          "watermarkOptions": {},
+          "panelLayoutOptions": {}
+        }]
+      },
+      printData: [{
+        "createTime": "2025-04-17 13:02:24",
+        "createUser": "jyz3",
+        "printDate": "2025-05-12 15:52:35",
+        "tableUser": "jyz3",
+        "updateTime": "2025-04-17 13:02:42",
+        "updateUser": "jyz3",
+        "slCode": 100066,
+        "warehouseId": 100066,
+        "warehouseName": "小数点",
+        "wzCode": "BB",
+        "wzId": 324,
+        "wzName": "BB区"
+      }],
+
+      noFile: true
+    }
+
+
+    window.autoConnect = false;
+    const templateDiv = document.querySelector("#hiprintTemplate.hiprintTemplate")
+
+    function renderHtml() {
+      hiprint.init({});
+      // 模拟网络请求然后,创建模板
+      var hiprintTemplate = new hiprint.PrintTemplate({
+        template: data.template,
+      });
+      // 渲染模板
+      let htmlJq = hiprintTemplate.getHtml(data.printData);
+      templateDiv.appendChild(htmlJq[0]);
+    }
+    renderHtml();
+  </script>
+</body>

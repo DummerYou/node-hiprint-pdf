@@ -64,8 +64,7 @@ export default async function (fastify, opts) {
         }
       }
       console.log("data", data);
-      // const host = `${request.protocol}://${request.hostname}`;
-      const host = `http://localhost:3000`;
+      const host = `${request.protocol}://${request.hostname}`;
       const url = data.url || `${host}/vue-plugin-hiprint/index.html`;
       fastify.cacheman.set(cacheId, data, cacheTime, (err, value) => {
         if (err) throw err;
