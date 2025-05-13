@@ -49,6 +49,20 @@ export default async function (fastify, opts) {
       const data = request.body;
       console.log("cacheId", cacheId);
       console.log("query", request.query);
+      if(data.printData && data.printData.length > 0 && typeof data.printData === 'string'){
+        try {
+          data.printData = JSON.parse(data.printData);
+        } catch (error) {
+          console.log("createImage error", error);
+        }
+      }
+      if(data.templateInfo && data.templateInfo.length > 0 && typeof data.templateInfo === 'string'){
+        try {
+          data.templateInfo = JSON.parse(data.templateInfo);
+        } catch (error) {
+          console.log("createImage error", error);
+        }
+      }
       console.log("data", data);
       const host = `${request.protocol}://${request.hostname}`;
       const url = data.url || `${host}/vue-plugin-hiprint/index.html`;
@@ -99,6 +113,21 @@ export default async function (fastify, opts) {
       const data = request.body;
       console.log("cacheId", cacheId);
       console.log("query", request.query);
+      // 判断是否是字符串，如果是字符串转成对象
+      if(data.printData && data.printData.length > 0 && typeof data.printData === 'string'){
+        try {
+          data.printData = JSON.parse(data.printData);
+        } catch (error) {
+          console.log("createImage error", error);
+        }
+      }
+      if(data.templateInfo && data.templateInfo.length > 0 && typeof data.templateInfo === 'string'){
+        try {
+          data.templateInfo = JSON.parse(data.templateInfo);
+        } catch (error) {
+          console.log("createImage error", error);
+        }
+      }
       console.log("data", data);
       const host = `${request.protocol}://${request.hostname}`;
       const url = data.url || `${host}/vue-plugin-hiprint/index.html`;
@@ -145,6 +174,20 @@ export default async function (fastify, opts) {
       const data = request.body;
       console.log("cacheId", cacheId);
       console.log("query", request.query);
+      if(data.printData && data.printData.length > 0 && typeof data.printData === 'string'){
+        try {
+          data.printData = JSON.parse(data.printData);
+        } catch (error) {
+          console.log("createImage error", error);
+        }
+      }
+      if(data.templateInfo && data.templateInfo.length > 0 && typeof data.templateInfo === 'string'){
+        try {
+          data.templateInfo = JSON.parse(data.templateInfo);
+        } catch (error) {
+          console.log("createImage error", error);
+        }
+      }
       console.log("data", data);
       const host = `${request.protocol}://${request.hostname}`;
       const url = data.url || `${host}/vue-plugin-hiprint/index.html`;
