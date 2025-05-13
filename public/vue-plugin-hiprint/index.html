@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="./print-lock.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="./print-lock.css" />
+    <!-- 如果觉得慢,可换成本地链接 -->
+    <script src="./jquery.js"></script>
+    <script src="./JsBarcode.all.min.js"></script>
+    <script src="./jquery.minicolors.min.js"></script>
+    <script src="./socket.io.min.js"></script>
+    <script src="https://unpkg.com/browse/canvg@4.0.1/dist/index.cjs"></script>
+    <!-- <script src="https://unpkg.com/canvg@4.0.1/dist/index.cjs"></script> -->
+    <script src="./jspdf.umd.min.js"></script>
+    <script src="./html2canvas.js"></script>
+    <script src="./nzh.min.js"></script>
+    <script src="./bwip-js.js"></script>
+    <script src="./vue-plugin-hiprint.js"></script>
+    <!-- axios网络请求 -->
+    <script src="./axios.min.js"></script>
+  </head>
+
+  <body>
+    <div id="hiprintTemplate" class="hiprintTemplate"></div>
+  </body>
+  <script defer>
+    window.autoConnect = false;
+    const templateDiv = document.querySelector("#hiprintTemplate.hiprintTemplate")
+    function renderHtml() {
+      hiprint.init({});
+      // 模拟网络请求然后,创建模板
+      const search = window.location.search;
+      const id = search.split("=")[1];
+      console.log(id);
+      if (!id) return;
+      axios
+        .get("/template", {
+          params: {
+            id: id,
+          },
+        })
+        .then((res) => {
+          // // 创建模板
+          if (res.status == 200 && res.data.code == 1) {
+            var data = res.data.data;
+            var hiprintTemplate = new hiprint.PrintTemplate({
+              template: data.template,
+            });
+            // 渲染模板
+            let htmlJq = hiprintTemplate.getHtml(data.printData);
+            templateDiv.appendChild(htmlJq[0]);
+          } else {
+            templateDiv.appendChild($(`<div class="hiprint-printTemplate">获取模板失败:${res}</div>`)[0]);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          templateDiv.appendChild($(`<div class="hiprint-printTemplate">${error}</div>`)[0]);
+        });
+    }
+    renderHtml();
+  </script>
+</html>
