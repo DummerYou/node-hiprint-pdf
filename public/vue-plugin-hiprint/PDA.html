@@ -1,0 +1,262 @@
+﻿<!DOCTYPE html>
+<html lang="ch">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" type="text/css" href="./print-lock.css" />
+  <link rel="stylesheet" type="text/css" media="print" href="./print-lock.css" />
+  <!-- 如果觉得慢,可换成本地链接 -->
+  <script src="./jquery.js"></script>
+  <script src="./JsBarcode.all.min.js"></script>
+  <script src="./jquery.minicolors.min.js"></script>
+  <script src="./socket.io.min.js"></script>
+  <script src="./canvg.cjs"></script>
+  <script src="./umd.js"></script>
+  <script src="./jspdf.umd.min.js"></script>
+  <script src="./html2canvas.js"></script>
+  <script src="./nzh.min.js"></script>
+  <script src="./bwip-js.js"></script>
+  <script src="./vue-plugin-hiprint.js"></script>
+</head>
+<style>
+  /* 初始化样式 */
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+  }
+
+  body {
+    display: inline-block;
+    font-size: 0;
+  }
+
+  #plugin {
+    background: #fff;
+    display: inline-block;
+
+  }
+</style>
+
+<body>
+  <div id="plugin"></div>
+  <!-- 注意 defer -->
+  <script defer>
+    // console.log('vue-plugin-hiprint')
+    // console.log(window['vue-plugin-hiprint'])
+    // console.log('hiprint')
+    // hiprint 以注入 全局
+    // console.log(hiprint)
+    var autoConnect = window['vue-plugin-hiprint'].autoConnect,
+      disAutoConnect = window['vue-plugin-hiprint'].disAutoConnect,
+      defaultElementTypeProvider = window['vue-plugin-hiprint'].defaultElementTypeProvider;
+    disAutoConnect()
+
+
+    // 新增方法，供安卓调用
+    function callPrintInfoFromAndroid(data) {
+      try {
+        var result = printInfo(data);
+        $("#plugin").html(result);
+        // 调用安卓的方法，将结果传递回去
+        return "success";
+      } catch (e) {
+        return "error";
+      }
+    }
+
+    // 回调函数 传入数据返回html
+    function printInfo(data) {
+      console.log("object", data);
+      if (data.type == 'one' || !data.type) {
+        return getHtml(
+          JSON.parse(data.templateInfo),
+          data.data,
+          data.templateTools,
+        )
+      } else if (data.type == 'any') {
+        console.log('多页多模板');
+        // 多页多模板
+        return getHtmls(data.data.map(v => {
+          return {
+            template: JSON.parse(v.templateInfo),
+            data: v,
+            templateTools: v.templateTools,
+          }
+        }), );
+      } else {
+        // this.$message.warning(`模板错误`);
+      }
+    }
+
+    // 打印按钮点击事件处理函数直接调用系统打印
+    function printBut(data) {
+      if (data.type == 'one') {
+        print(
+          JSON.parse(data.templateInfo),
+          data.data,
+          data.templateTools,
+        );
+      } else if (data.type == 'any') {
+        console.log('多页多模板');
+        prints(data.data.map(v => {
+          return {
+            template: JSON.parse(v.templateInfo),
+            data: v,
+            templateTools: v.templateTools,
+          }
+        }), );
+      } else {
+        this.$message.warning(`模板错误`);
+      }
+    }
+
+
+    let data2 = {
+        "data": [
+            {
+                "consignorName": "艾欧尼亚",
+                "goodsCode": "sweet",
+                "goodsId": 82,
+                "goodsName": "甜瓜",
+                goodsName: "甜瓜2",
+                "lpnNum": 3.0,
+                "planSlCode": "STAGE",
+                "printDate": "2025-05-14 09:50:20",
+                "qualityStatus": "良品",
+                "tableUser": "心伤谁来疼",
+                "warpUnit": "件"
+            },{
+                "consignorName": "艾欧尼亚",
+                "goodsCode": "sweet",
+                "goodsId": 82,
+                "goodsName": "甜瓜",
+                goodsName: "甜瓜2",
+                "lpnNum": 3.0,
+                "planSlCode": "STAGE",
+                "printDate": "2025-05-14 09:50:20",
+                "qualityStatus": "良品",
+                "tableUser": "心伤谁来疼",
+                "warpUnit": "件"
+            }
+        ],
+        "templateCode": "rwr",
+        "templateId": 158,
+        "templateInfo": "{\"panels\":[{\"index\":0,\"name\":1,\"height\":80,\"width\":140,\"paperHeader\":0,\"paperFooter\":226.7716535433071,\"printElements\":[{\"options\":{\"left\":72.5,\"top\":7.5,\"height\":45,\"width\":256.5,\"title\":\"跟踪号\",\"barcodeType\":\"code128\",\"testData\":\"202301010001\",\"fontSize\":12,\"lineHeight\":18,\"textAlign\":\"center\",\"componentType\":\"barCode\",\"field\":\"trackCode\",\"right\":328.9921875,\"bottom\":51.75,\"vCenter\":200.7421875,\"hCenter\":29.25,\"coordinateSync\":false,\"widthHeightSync\":false,\"hideTitle\":true},\"printElementType\":{\"title\":\"跟踪号\",\"type\":\"barcode\"}},{\"options\":{\"left\":107.5,\"top\":50,\"height\":16,\"width\":200,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"stringTrackCode\",\"title\":\"跟踪号数字\",\"coordinateSync\":false,\"widthHeightSync\":false,\"qrCodeLevel\":0},\"printElementType\":{\"title\":\"跟踪号数字\",\"type\":\"text\"}},{\"options\":{\"left\":20,\"top\":62.5,\"height\":16,\"width\":372,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"goodsName\",\"title\":\"商品名称\",\"right\":390.75,\"bottom\":77.5,\"vCenter\":204.75,\"hCenter\":69.5},\"printElementType\":{\"title\":\"商品名称\",\"type\":\"text\"}},{\"options\":{\"left\":20,\"top\":85,\"height\":16,\"width\":150,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"goodsCode\",\"title\":\"商品编码\"},\"printElementType\":{\"title\":\"商品编码\",\"type\":\"text\"}},{\"options\":{\"left\":215,\"top\":87.5,\"height\":16,\"width\":150,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"fldS1\",\"title\":\"扩展字段1\"},\"printElementType\":{\"title\":\"扩展字段1\",\"type\":\"text\"}},{\"options\":{\"left\":214.5,\"top\":109,\"height\":16,\"width\":150,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"warpTi\",\"title\":\"Ti\",\"right\":381.4921875,\"bottom\":122.74609375,\"vCenter\":306.4921875,\"hCenter\":114.74609375},\"printElementType\":{\"title\":\"Ti\",\"type\":\"text\"}},{\"options\":{\"left\":19.5,\"top\":109,\"height\":16,\"width\":150,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"productDate\",\"title\":\"生产日期\"},\"printElementType\":{\"title\":\"生产日期\",\"type\":\"text\"}},{\"options\":{\"left\":214.5,\"top\":135,\"height\":16,\"width\":150,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"warpHi\",\"title\":\"Hi\"},\"printElementType\":{\"title\":\"Hi\",\"type\":\"text\"}},{\"options\":{\"left\":19.5,\"top\":135,\"height\":16,\"width\":150,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"expiryDate\",\"title\":\"失效日期\"},\"printElementType\":{\"title\":\"失效日期\",\"type\":\"text\"}},{\"options\":{\"left\":214.5,\"top\":161,\"height\":16,\"width\":150,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"lpnNum\",\"title\":\"包装数量\",\"right\":339.24609375,\"bottom\":172.75,\"vCenter\":264.24609375,\"hCenter\":164.75,\"coordinateSync\":false,\"widthHeightSync\":false,\"qrCodeLevel\":0},\"printElementType\":{\"title\":\"包装数量\",\"type\":\"text\"}},{\"options\":{\"left\":20,\"top\":162.5,\"height\":16,\"width\":171,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"batchAttr1\",\"title\":\"批次标签1\"},\"printElementType\":{\"title\":\"批次标签1\",\"type\":\"text\"}},{\"options\":{\"left\":20,\"top\":195,\"height\":16,\"width\":169.5,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"qualityStatus\",\"title\":\"质量状态\"},\"printElementType\":{\"title\":\"质量状态\",\"type\":\"text\"}},{\"options\":{\"left\":210,\"top\":195,\"height\":16,\"width\":200,\"testData\":\"XXXXXXXXXXX\",\"fontSize\":10,\"textAlign\":\"left\",\"textContentVerticalAlign\":\"middle\",\"componentType\":\"text\",\"field\":\"consignorName\",\"title\":\"货主\"},\"printElementType\":{\"title\":\"货主\",\"type\":\"text\"}}],\"paperNumberLeft\":253,\"paperNumberTop\":204,\"paperNumberDisabled\":true,\"paperNumberContinue\":false,\"watermarkOptions\":{}}]}",
+        "templateName": "标签打印",
+        "templateTools": "LODOP",
+        "templateType": "LPN",
+        "type": "one"
+    }
+    // arraybuffer,dataurl,bloburl,dataurlstring,pdfobjectnewwindow
+    exportPdf(data2);
+    // callPrintInfoFromAndroid(data2);
+
+    function exportPdf(data, type="bloburl") {
+
+      hiprint.init({
+        providers: [new defaultElementTypeProvider()],
+      });
+      var hiprintTemplate = new hiprint.PrintTemplate({
+        template: JSON.parse(data.templateInfo),
+      });
+
+      $("#plugin").html(hiprintTemplate.getHtml(data.data))
+
+        hiprintTemplate.toPdf(data.data, '测试导出pdf', {
+          isDownload: false,
+          type: type
+        }).then((res) => {
+          console.log('type:', type);
+          console.log(res);
+          // resolve(res)
+          // 下载pdf文件
+          window.open(res);
+
+
+        });
+        // html2canvas(document.getElementById('plugin')).then(function (canvas) {
+        //     // 将画布 (Canvas) 转为图片 (Data URL)
+        //     const imgData = canvas.toDataURL('image/png');
+
+        //     // 创建下载链接
+        //     const link = document.createElement('a');
+        //     link.href = imgData;
+        //     link.download = 'html_to_image.png'; // 设置下载文件名
+
+        //     // 模拟点击下载链接
+        //     link.click();
+        // });
+      
+    }
+
+    // 根据模板和数据生成单个HTML
+    function getHtml(template, data) {
+      hiprint.init({
+        providers: [new defaultElementTypeProvider()],
+      });
+      var hiprintTemplate = new hiprint.PrintTemplate({
+        template: template,
+      });
+
+      return hiprintTemplate.getHtml(data);
+    };
+
+    // 根据多个模板和数据生成多个HTML
+    function getHtmls(templates) {
+      let hiprintData = templates.map((v) => {
+        return {
+          template: new hiprint.PrintTemplate({
+            template: v.template
+          }),
+          data: v.data,
+        };
+      });
+
+
+      if (hiprintData.length) {
+        return hiprintTemplate.getHtml({
+          templates: hiprintData,
+        });
+      }
+    }
+
+
+    // 打印单个模板
+    function print(template, data, templateTools) {
+      console.log(template, data, templateTools);
+
+      hiprint.init({
+        providers: [new defaultElementTypeProvider()],
+      });
+      var hiprintTemplate = new hiprint.PrintTemplate({
+        template: template,
+      });
+
+      hiprintTemplate.print(data, {}, {});
+    }
+
+    // 打印多个模板
+    function prints(templates) {
+      let hiprintData = templates
+        .map((v) => {
+          return {
+            template: new hiprint.PrintTemplate({
+              template: v.template
+            }),
+            data: v.data,
+          };
+        });
+      if (hiprintData.length) {
+        hiprint.print({
+          templates: hiprintData,
+        });
+      }
+    }
+  </script>
+</body>
+
+</html>

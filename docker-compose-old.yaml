@@ -1,9 +1,9 @@
 version: "3"
 services:
   node-hiprint-pdf:
-    image: node-hiprint-pdf:v2
+    image: node-hiprint-pdf:1.0.0
     restart: always
-    container_name: node-hiprint-pdf_v2
+    container_name: node-hiprint-pdf
     build:
       context: ./
       dockerfile: Dockerfile
